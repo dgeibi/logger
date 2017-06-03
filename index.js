@@ -1,5 +1,6 @@
 const colors = require('colors');
 const { EOL } = require('os');
+const stringify = require('json-stringify-safe');
 
 colors.setTheme({
   silly: 'rainbow',
@@ -14,10 +15,16 @@ colors.setTheme({
   error: 'red',
 });
 
-function log(color, args0, ...args) {
-  if (args && args0 instanceof Error) console.log(colors[color](args0.stack + EOL));
-  else args.unshift(args0);
-  console.log(colors[color](args.join(' ')));
+function log(color, ...args) {
+  const str = args.map((arg) => {
+    if (arg) {
+      if (arg instanceof Error) return arg.stack;
+      if (arg instanceof Function) return arg;
+      if (arg instanceof Object) return stringify(arg);
+    }
+    return arg;
+  }).join(' ');
+  console.log(colors[color](str));
 }
 
 function bind(fn, ...args) {

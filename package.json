@@ -1,12 +1,13 @@
 {
   "name": "logger",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "description": "logger",
   "main": "index.js",
   "author": "dgeibi",
   "license": "MIT",
   "dependencies": {
-    "colors": "^1.1.2"
+    "colors": "^1.1.2",
+    "json-stringify-safe": "^5.0.1"
   }
 }
