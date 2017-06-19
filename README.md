@@ -1,6 +1,6 @@
 # logger
 
-a wrapper of `colors`
+a wrapper of `chalk`
 
 ## Install
 
