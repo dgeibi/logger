@@ -15,12 +15,9 @@ const aliases = {
 
 function log(color, ...args) {
   const str = args.map((arg) => {
-    if (arg) {
-      if (arg instanceof Error) return arg.stack;
-      if (arg instanceof Function) return arg;
-      if (arg instanceof Object) return stringify(arg);
-    }
-    return arg;
+    if (typeof arg !== 'object' || !arg) return String(arg);
+    if (arg instanceof Error) return arg.stack;
+    return stringify(arg);
   }).join(' ');
   console.log(chalk[color](str));
 }
