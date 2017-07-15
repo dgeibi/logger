@@ -1,7 +1,8 @@
 const chalk = require('chalk');
-const stringify = require('json-stringify-safe');
+const util = require('util');
 
 const colors = {
+  log: null,
   verbose: 'cyan',
   info: 'green',
   warn: 'yellow',
@@ -13,21 +14,21 @@ const aliases = {
   err: 'error',
 };
 
-function log(color, ...args) {
-  const str = args.map((arg) => {
-    if (typeof arg !== 'object' || !arg) return String(arg);
-    if (arg instanceof Error) return arg.stack;
-    return stringify(arg);
-  }).join(' ');
-  console.log(chalk[color](str));
-}
+const mapFn = arg => (typeof arg === 'function' ? String(arg) : arg);
 
-const logger = {
-  log: console.log,
+const log = color => (...args) => {
+  const str = util.format(...args.map(mapFn));
+  if (color !== null) {
+    console.log(chalk[color](str));
+  } else {
+    console.log(str);
+  }
 };
 
+const logger = {};
+
 Object.keys(colors).forEach((x) => {
-  logger[x] = log.bind(null, colors[x]);
+  logger[x] = log(colors[x]);
 });
 
 Object.keys(aliases).forEach((x) => {
